@@ -11,10 +11,11 @@ import {
 } from "react-native";
 import config from "../../../config";
 import axios from "axios";
-import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner from "react-native-loading-spinner-overlay";
+import { connect } from "react-redux";
+import {setUser} from "../../redux/actions/actions"
 
-
-export default class Form extends Component {
+class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +25,6 @@ export default class Form extends Component {
       loading: false
     };
   }
-
   onClickListener = () => {
     this.setState({
       loading: !this.state.spinner
@@ -36,19 +36,24 @@ export default class Form extends Component {
         phone_number: this.state.phone_number
       })
       .then(response => {
-        if(response.data.status === 0){
+        console.log(response.data.data[0]);
+        if (response.data.status === 0) {
           this.setState({
             loading: false
           });
-          alert(response.data.message[0].message)
-        }else{
+          alert(response.data.message[0].message);
+        } else {
           this.setState({
             loading: false
           });
-          this.props.navigation.navigate('App')
+          this.props.dispatch(setUser(response.data.data[0]))
+          this.props.navigation.navigate("App");
         }
       })
       .catch(function(error) {
+        this.setState({
+          loading: false
+        });
         console.log(error);
       });
   };
@@ -58,7 +63,7 @@ export default class Form extends Component {
       <View style={styles.container}>
         <Spinner
           visible={this.state.loading}
-          textContent={'Loading...'}
+          textContent={"Loading..."}
           textStyle={styles.spinnerTextStyle}
         />
         <View style={styles.inputContainer}>
@@ -116,7 +121,12 @@ export default class Form extends Component {
     );
   }
 }
-
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+export default connect(mapStateToProps)(Form);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

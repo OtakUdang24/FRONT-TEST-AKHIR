@@ -31,7 +31,7 @@ const FormStack = createStackNavigator(
       headerMode: "none",
       navigationOptions: {
         headerVisible: false
-      }
+      },
     }
 );
 

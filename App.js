@@ -15,9 +15,9 @@ import RootNavigation from './src/navigations/Router';
 export default class App extends Component {
   render() {
     return (
-      // <Provider store={store}>
+      <Provider store={store}>
         <RootNavigation />
-      // </Provider>
+      </Provider>
     );
   }
 }

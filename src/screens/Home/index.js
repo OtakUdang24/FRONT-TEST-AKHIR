@@ -8,8 +8,18 @@ import {
 } from "react-native";
 import { Container, Header, Content, Button, Footer } from "native-base";
 
-export default class ProfileIconsView extends Component {
+export default class Home extends Component {
+  constructor(props){
+    super(props)
+    const { navigation } = this.props;
+    const data = navigation.getParam('userData', 'NO-ID');
+    this.state = {
+      user : data
+    }
+  }
+  
   render() {
+    console.log(this.state.user)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
