@@ -141,16 +141,16 @@ class QScreen extends Component {
           textStyle={styles.spinnerTextStyle}
         />
         <Header style={{ backgroundColor: "#00b5ec" }} >
-          <Left>
+          <Body>
             <Text style={styles.headerLeftText}>
               Question 
             </Text>
-          </Left>
-          <Right>
+          </Body>
+          {/* <Right>
             <Text>
               <Ionicons name="md-close" size={30} color="#ffff" />
-            </Text>
-          </Right>
+            </Text> 
+          </Right> */}
         </Header>
         <Header style={{ backgroundColor: "#5cb85c" }} >
           <View style={{marginTop: 16}}>

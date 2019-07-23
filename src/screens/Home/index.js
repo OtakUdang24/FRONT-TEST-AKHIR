@@ -33,14 +33,14 @@ export default class Home extends Component {
             <Text style={styles.name}>PT LOREM DOLOR SIT AMED</Text>
           </View>
         </View>
-        <Content>
-          <View>
-            <Text>
+        <Content style={{backgroundColor: '#00BFFF'}}>
+          <View style={{backgroundColor: 'white',padding: 20, margin: 10, borderRadius: 10}}>
+            <Text style={{textAlign:'center'}}>
               Anda akan diberikan 4 jenis pertanyaan Pertanyaan pertama dalam bentuk essay,kemudian multiple choice, setelah itu multi select dan terakhir live intervue
             </Text>
           </View>
-        </Content>
-        <Button
+          <View style={{margin: 10}}>
+          <Button
           full
           onPress={() => this.props.navigation.navigate("QScreen")}
           style={[
@@ -51,6 +51,9 @@ export default class Home extends Component {
           >
             <Text style={styles.loginText}>Mulai</Text>
         </Button>
+          </View>
+        </Content>
+        
       </Container>
     );
 
@@ -134,12 +137,14 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // marginBottom: 20,
     // width: 150,
-    // borderRadius: 30
+    borderRadius: 10
   },
   loginButton: {
-    backgroundColor: "#00b5ec"
+    backgroundColor: "#1ce619",
+    // margin: 10
   },
   loginText: {
-    color: "white"
+    color: "white",
+    fontWeight: 'bold'
   }
 });

@@ -36,13 +36,12 @@ class Form extends Component {
         phone_number: this.state.phone_number
       })
       .then(response => {
-        console.log(response.data.data[0]);
-        if (response.data.status === 0) {
+        if(response.data.status === 0){
           this.setState({
             loading: false
           });
           alert(response.data.message[0].message);
-        } else {
+        }else{
           this.setState({
             loading: false
           });
