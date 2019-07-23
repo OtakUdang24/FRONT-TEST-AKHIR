@@ -50,7 +50,7 @@ class Form extends Component {
           this.props.navigation.navigate("App");
         }
       })
-      .catch(function(error) {
+      .catch((error) => {
         this.setState({
           loading: false
         });
@@ -106,6 +106,7 @@ class Form extends Component {
             style={styles.inputs}
             placeholder="No telp juga dh"
             underlineColorAndroid="transparent"
+            keyboardType="numeric"
             onChangeText={phone_number => this.setState({ phone_number })}
           />
         </View>

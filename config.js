@@ -1,3 +1,3 @@
 module.exports = {
-    BASE_URL:"http://192.168.0.20:3333"
+    BASE_URL:"https://intervuejs.herokuapp.com"
 };

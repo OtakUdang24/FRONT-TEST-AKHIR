@@ -11,6 +11,11 @@ export const setQuiz = (quiz) => {
         payload: quiz
     }
 }
+export const setTimer = () => {
+    return {
+        type: 'SET_TIMER',
+    }
+}
 export const updateQuizRadio = (number, checked) => {
     return {
         type: 'UPDATE_QUIZ_RADIO',
@@ -28,6 +33,12 @@ export const updateQuizRadioMulti = (number, checked) => {
 export const updateCurrentQuestionPlus = (number) => {
     return {
         type: 'UPDATE_CURRENT_QUESTION_PLUS',
+        number: number
+    }
+}
+export const updateCurrentQuestionSatu = (number) => {
+    return {
+        type: 'UPDATE_CURRENT_QUESTION_SATU',
         number: number
     }
 }

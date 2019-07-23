@@ -6,7 +6,7 @@ import {
   Image,
   TouchableHighlight
 } from "react-native";
-import { Container, Header, Content, Button, Footer } from "native-base";
+import { Container, Header, Content, Button, Footer, FooterTab, Right, Left, Title, Icon, Body } from "native-base";
 
 export default class Home extends Component {
   constructor(props){
@@ -19,12 +19,11 @@ export default class Home extends Component {
   }
   
   render() {
-    console.log(this.state.user)
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <Image
+       <Container>
+         <View style={styles.header}>
+           <View style={styles.headerContent}>
+           <Image
               style={styles.avatar}
               source={{
                 uri:
@@ -34,38 +33,27 @@ export default class Home extends Component {
             <Text style={styles.name}>PT LOREM DOLOR SIT AMED</Text>
           </View>
         </View>
-
-        <View style={styles.body}>
-          <View style={styles.bodyContent}>
-            <View
-              style={{
-                backgroundColor: "",
-                flex: 1,
-                alignItems: "center",
-                marginVertical: 10
-              }}
-            >
-              <Text style={styles.petunjuk}>PeTunjuk</Text>
-              <Text style={styles.petunjuk}>1.</Text>
-              <Text style={styles.petunjuk}>2.</Text>
-              <Text style={styles.petunjuk}>3.</Text>
-            </View>
+        <Content>
+          <View>
+            <Text>
+              Anda akan diberikan 4 jenis pertanyaan Pertanyaan pertama dalam bentuk essay,kemudian multiple choice, setelah itu multi select dan terakhir live intervue
+            </Text>
           </View>
-        </View>
-        <View style={{}}>
-          <Button
-            onPress={() => this.props.navigation.navigate("QScreen")}
-            style={[
-              styles.buttonContainer,
-              styles.loginButton,
-              { alignSelf: "center" }
-            ]}
+        </Content>
+        <Button
+          full
+          onPress={() => this.props.navigation.navigate("QScreen")}
+          style={[
+            styles.buttonContainer,
+            styles.loginButton,
+            { alignSelf: "center", width: '100%' }
+          ]}
           >
             <Text style={styles.loginText}>Mulai</Text>
-          </Button>
-        </View>
-      </View>
+        </Button>
+      </Container>
     );
+
   }
 }
 
@@ -141,12 +129,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     height: 45,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-    width: 150,
-    borderRadius: 30
+    // flexDirection: "row",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // marginBottom: 20,
+    // width: 150,
+    // borderRadius: 30
   },
   loginButton: {
     backgroundColor: "#00b5ec"

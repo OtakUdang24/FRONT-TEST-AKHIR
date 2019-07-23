@@ -17,30 +17,80 @@ import RadioGroup from "react-native-radio-buttons-group";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import RadioButtons from "./RadioButtons";
-import { setQuiz, updateQuizRadio, updateCurrentQuestionPlus, updateCurrentQuestionMinus, updateQuizText, updateQuizRadioMulti } from "../../redux/actions/actions";
+import { setTimer,updateCurrentQuestionSatu,setQuiz, updateQuizRadio, updateCurrentQuestionPlus, updateCurrentQuestionMinus, updateQuizText, updateQuizRadioMulti } from "../../redux/actions/actions";
 import { connect } from "react-redux";
 import config from "../../../config";
 import axios from "axios";
-
+import Spinner from "react-native-loading-spinner-overlay";
 
 class QScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: []
+      questions: [],
+      loading: false,
+      minutes: 0,
+      seconds: 0,
+      countDown: 0
     };
   }
-  componentDidMount(){
-      axios
-      .get(`${config.BASE_URL}/api/v1/questions`)
-      .then(response => {
-        this.props.dispatch(setQuiz(response.data.data))
-        // console.log(response)
-      })
-      .catch(function(error) {
-        console.log(error);
+  async componentDidMount(){
+    try{
+      const result = await axios.get(`${config.BASE_URL}/api/v1/questions`);
+      this.props.dispatch(setQuiz(result.data.data))
+      this.props.dispatch(setTimer())
+    }catch(error){
+      console.log(error)
+    }
+    const second = 1000,
+      minute = second * 60,
+      hour = minute * 60,
+      day = hour * 24;
+    
+    this.interval = setInterval(() => {
+      let now = new Date().getTime(),
+        distance = this.props.quiz.countDown - now;
+      this.setState({
+        minutes: Math.floor((distance % hour) / minute),
+        seconds: Math.floor((distance % minute) / second)
       });
+
+      if(this.state.seconds === 0 && this.state.minutes === 0){
+        if(this.props.quiz.currentQ < this.props.quiz.quiz.length){
+          this.props.dispatch(updateCurrentQuestionPlus(1)) 
+          this.props.dispatch(setTimer())
+          this.setState({
+            countDown: currentTime.setTime(currentTime.getTime() + 1000 * 60 * this.props.quiz.timer)
+          })
+        }else{
+          this.setState({
+            loading: true
+          });
+          axios
+            .post(`${config.BASE_URL}/api/v1/answers`, {
+              data: this.props.quiz.quiz,
+              user: this.props.user.user
+            })
+            .then(response => {
+              this.setState({
+                loading: false
+              });
+              alert("Berhasil Horee")
+              this.props.dispatch(updateCurrentQuestionSatu(1))
+              this.props.navigation.navigate("Form");
+            })
+            .catch(function(error) {
+              this.setState({
+                loading: false
+              });
+              console.log(error);
+            });
+        }
+        
+      }
+    }, second);
   }
+  
   clickRadio = (number, indexRadio) => {
     this.props.dispatch(updateQuizRadio(number, indexRadio))
   }
@@ -48,7 +98,8 @@ class QScreen extends Component {
     this.props.dispatch(updateQuizRadioMulti(number, indexRadio))
   }
   next = () => {
-    this.props.dispatch(updateCurrentQuestionPlus(1))
+    this.props.dispatch(updateCurrentQuestionPlus(1)) 
+    this.props.dispatch(setTimer())
   }
   previous = () => {
     this.props.dispatch(updateCurrentQuestionMinus(1))
@@ -57,22 +108,38 @@ class QScreen extends Component {
     this.props.dispatch(updateQuizText(number,text))
   }
   handleFinish = () => {
-    // alert('asg')
+    this.setState({
+      loading: true
+    });
     axios
       .post(`${config.BASE_URL}/api/v1/answers`, {
         data: this.props.quiz.quiz,
         user: this.props.user.user
       })
       .then(response => {
-        console.log(response.data);
+        this.setState({
+          loading: false
+        });
+        alert("Berhasil Horee")
+        this.props.dispatch(updateCurrentQuestionSatu(1))
+        this.props.navigation.navigate("Form");
+        // console.log(response.data);
       })
-      .catch(function(error) {
+      .catch((error) => {
+        this.setState({
+          loading: false
+        });
         console.log(error);
       });
   }
   render() {
     return (
       <Container>
+        <Spinner
+          visible={this.state.loading}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
         <Header style={{ backgroundColor: "#00b5ec" }} >
           <Left>
             <Text style={styles.headerLeftText}>
@@ -93,12 +160,12 @@ class QScreen extends Component {
           <Right>
             <Text>
               <MaterialCommunityIcons name="timer" size={25} color="#ffff" />              
-              {/* <Text style={{fontSize: 20, color: "#ffff"}}>00:00</Text> */}
+              <Text style={{fontSize: 20, color: "#ffff"}}>{this.state.minutes}:{this.state.seconds}</Text>
             </Text>
           </Right>
         </Header>
         <Content padder>
-          {this.props.quiz.quiz.filter((data) => {
+        {this.props.quiz.quiz.filter((data) => {
             return data.number == this.props.quiz.currentQ
           }).map((quiz) => {
             switch(quiz.type){
@@ -136,9 +203,7 @@ class QScreen extends Component {
                             <View style={{flex: 1}}>
                               <Button title="Finish" onPress={this.handleFinish}></Button>
                             </View>
-                            <View style={{flex:1}}>
-                              <Button title="Previous" onPress={this.previous}></Button>
-                            </View>
+    
                           </View>
                       )
                     }
@@ -175,9 +240,7 @@ class QScreen extends Component {
                             <View style={{flex: 1}}>
                               <Button title="Finish" onPress={this.handleFinish}></Button>
                             </View>
-                            <View style={{flex:1}}>
-                              <Button title="Previous" onPress={this.previous}></Button>
-                            </View>
+                           
                           </View>
                         )
                       }
@@ -220,9 +283,7 @@ class QScreen extends Component {
                             <View style={{flex: 1}}>
                               <Button title="Finish" onPress={this.handleFinish}></Button>
                             </View>
-                            <View style={{flex:1}}>
-                              <Button title="Previous" onPress={this.previous}></Button>
-                            </View>
+                       
                           </View>
                       )
                     }

@@ -6,6 +6,8 @@ const initialState = {
     currentQ: 1,
     error: null,
     isLoading: false,
+    timer: 0,
+    countDown: 0
 }
 
 export default quiz = (state = initialState, action) => {
@@ -17,6 +19,17 @@ export default quiz = (state = initialState, action) => {
                 quiz: action.payload
             }
             break
+        case 'SET_TIMER':
+            console.log('SET_TIMER')
+            const minute = state.quiz[state.currentQ-1].timer
+            var currentTime = new Date();
+            
+            return {
+                ...state, 
+                timer: minute,
+                countDown: currentTime.setTime(currentTime.getTime() + 1000 * 60 * minute)
+            }
+        break
         case 'UPDATE_QUIZ_RADIO':
             console.log('UPDATE_QUIZ_RADIO')
             const data = []
@@ -28,6 +41,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: action.checked
                     })
                 }else if(state.quiz[index].type === "multiple choice"){
@@ -37,6 +51,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: state.quiz[index].checked
                     })
                 }else if(state.quiz[index].type === "multi select"){
@@ -46,6 +61,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: state.quiz[index].checked
                     })
                 }else if(state.quiz[index].type === "text"){
@@ -54,6 +70,7 @@ export default quiz = (state = initialState, action) => {
                         number: state.quiz[index].number,
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
+                        timer: state.quiz[index].timer,
                         value: state.quiz[index].value
                     })
                 }          
@@ -74,6 +91,13 @@ export default quiz = (state = initialState, action) => {
                 currentQ: state.currentQ - action.number
             }
         break
+        case 'UPDATE_CURRENT_QUESTION_SATU':
+            console.log('UPDATE_CURRENT_QUESTION_SATU')
+            return {
+                ...state, 
+                currentQ: action.number
+            }
+        break
         case 'UPDATE_QUIZ_TEXT':
             console.log('UPDATE_QUIZ_TEXT')
             const data2 = []
@@ -84,6 +108,7 @@ export default quiz = (state = initialState, action) => {
                         number: state.quiz[index].number,
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
+                        timer: state.quiz[index].timer,
                         value: action.text
                     })
                 }else if(state.quiz[index].type === "multiple choice"){
@@ -93,6 +118,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: state.quiz[index].checked
                     })
                 }else if(state.quiz[index].type === "multi select"){
@@ -102,6 +128,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: state.quiz[index].checked
                     })
                 }else if(state.quiz[index].type === "text"){
@@ -110,6 +137,7 @@ export default quiz = (state = initialState, action) => {
                         number: state.quiz[index].number,
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
+                        timer: state.quiz[index].timer,
                         value: state.quiz[index].value
                     })
                 }          
@@ -131,6 +159,7 @@ export default quiz = (state = initialState, action) => {
                             description: state.quiz[index].description,
                             type: state.quiz[index].type,
                             options: state.quiz[index].options,
+                            timer: state.quiz[index].timer,
                             checked: filtered
                         })
                     }else{
@@ -140,6 +169,7 @@ export default quiz = (state = initialState, action) => {
                             description: state.quiz[index].description,
                             type: state.quiz[index].type,
                             options: state.quiz[index].options,
+                            timer: state.quiz[index].timer,
                             checked: [...state.quiz[index].checked, action.checked]
                         })
                     }
@@ -151,6 +181,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: action.checked
                     })
                 }else if(state.quiz[index].type === "multiple choice"){
@@ -160,6 +191,7 @@ export default quiz = (state = initialState, action) => {
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
                         options: state.quiz[index].options,
+                        timer: state.quiz[index].timer,
                         checked: state.quiz[index].checked
                     })
                 }else if(state.quiz[index].type === "text"){
@@ -168,6 +200,7 @@ export default quiz = (state = initialState, action) => {
                         number: state.quiz[index].number,
                         description: state.quiz[index].description,
                         type: state.quiz[index].type,
+                        timer: state.quiz[index].timer,
                         value: state.quiz[index].value
                     })
                 }          
