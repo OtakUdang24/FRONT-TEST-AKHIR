@@ -41,7 +41,7 @@ const AppRoute = createSwitchNavigator(
         App: AppStack
     },
     {
-      initialRouteName: "App"
+      initialRouteName: "Form"
     }
 )
 export default createAppContainer(AppRoute);
